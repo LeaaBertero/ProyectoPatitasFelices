@@ -45,12 +45,12 @@ namespace PatitasFelices.BD.Data
             {        //Elimina el cmportamiento               
                 fk.DeleteBehavior = DeleteBehavior.Restr­ict;
             }
+        }
+        #endregion
 
 
 
             
-        }
-        #endregion
 
 
     }
