@@ -16,10 +16,30 @@ namespace PatitasFelices.Server.Controllers
             this.context = context;
         }
 
+        #region Método Get
         [HttpGet]
         public async Task<ActionResult<List<Precio>>> Get()
         {
             return await context.Precio.ToListAsync();
         }
+        #endregion
+
+        #region Método Post
+        [HttpPost]
+        public async Task<ActionResult<int>> Post(Precio entidad)
+        {
+            try
+            {
+                context.Precio.Add(entidad);
+                await context.SaveChangesAsync();
+                return entidad.Id;
+            }
+            catch (Exception err)
+            {
+
+                return BadRequest(err.Message);
+            }
+        }
+        #endregion
     }
 }
