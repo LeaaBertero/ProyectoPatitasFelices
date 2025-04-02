@@ -3,6 +3,8 @@ using PatitasFelices.BD.Data;
 
 namespace PatitasFelices.Server.Controllers
 {
+    [ApiController]
+    [Route("api/Tarjeta")]
     public class TarjetaControllers : ControllerBase
     {
         private readonly Context context;

@@ -3,6 +3,8 @@ using PatitasFelices.BD.Data;
 
 namespace PatitasFelices.Server.Controllers
 {
+    [ApiController]
+    [Route("api/Mensaje")]
     public class MensajeControllers : ControllerBase
     {
         private readonly Context context;
