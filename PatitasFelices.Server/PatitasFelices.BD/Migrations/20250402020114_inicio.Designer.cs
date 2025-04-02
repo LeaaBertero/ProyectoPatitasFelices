@@ -12,7 +12,7 @@ using PatitasFelices.BD.Data;
 namespace PatitasFelices.BD.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20250401191015_inicio")]
+    [Migration("20250402020114_inicio")]
     partial class inicio
     {
         /// <inheritdoc />

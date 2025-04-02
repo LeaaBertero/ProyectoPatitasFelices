@@ -30,9 +30,7 @@ namespace PatitasFelices.BD.Data
         public DbSet<Transaccion> Transaccion { get; set; }
         public DbSet<Usuario> Usuario { get; set; }
 
-        //protected Context( Context contex)
-        //{
-        //}
+       
 
         //codigo que evita que un registro de la base de datos, pueda borrarse en cascada
         #region OnModelCreating
@@ -48,9 +46,13 @@ namespace PatitasFelices.BD.Data
                 fk.DeleteBehavior = DeleteBehavior.Restr­ict;
             }
 
-            base.OnModelCreating(modelBuilder);
+
+
+            
         }
         #endregion
+
+
     }
 }
 
