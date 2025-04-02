@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace PatitasFelices.BD.Data.Entity
 {
+
     public class Usuario : EntityBase
     {
         #region clave primaria

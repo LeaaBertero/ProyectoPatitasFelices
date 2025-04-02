@@ -16,7 +16,12 @@ namespace PatitasFelices.Server.Controllers
             this.context = context;
         }
 
-       
+        [HttpGet]
+        public async Task<ActionResult<List<Comentario>>> Get()
+        {
+            return await context.Comentario.ToListAsync();
+        }
+
     }
 }
         

@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PatitasFelices.BD.Data;
+using PatitasFelices.BD.Data.Entity;
 
 namespace PatitasFelices.Server.Controllers
 {
@@ -13,5 +15,13 @@ namespace PatitasFelices.Server.Controllers
         {
             this.context = context;
         }
+
+        [HttpGet]
+        public async Task<ActionResult<List<Tarjeta>>> Get()
+        {
+            return await context.Tarjeta.ToListAsync();
+        }
     }
+
+
 }

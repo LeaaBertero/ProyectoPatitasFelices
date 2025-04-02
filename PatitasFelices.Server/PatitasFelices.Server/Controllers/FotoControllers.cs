@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PatitasFelices.BD.Data;
+using PatitasFelices.BD.Data.Entity;
 
 namespace PatitasFelices.Server.Controllers
 {
@@ -12,6 +14,12 @@ namespace PatitasFelices.Server.Controllers
         public FotoControllers(Context context)
         {
             this.context = context;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<Foto>>> Get()
+        {
+            return await context.Foto.ToListAsync();
         }
     }
 }
