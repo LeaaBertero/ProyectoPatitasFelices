@@ -41,5 +41,40 @@ namespace PatitasFelices.Server.Controllers
             }
         }
         #endregion
+
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult> Put(int id, [FromBody] Reserva entidad)
+        {
+            if (id != entidad.Id)
+            {
+                return BadRequest("Datos incorrectos");
+            }
+
+            var Dummy = await context.Reserva.Where(e => entidad.Id == id).FirstOrDefaultAsync();
+
+            if (Dummy == null)
+            {
+                return NotFound("No existe el usuario buscado");
+            }
+
+            Dummy.FechaHoraInicio = entidad.FechaHoraInicio;
+            Dummy.FechaHoraFin = entidad.FechaHoraFin;
+            Dummy.EstadoReserva = entidad.EstadoReserva;
+           
+
+            try
+            {
+                context.Reserva.Update(Dummy);
+                await context.SaveChangesAsync();
+            }
+            catch (Exception err)
+            {
+
+                return BadRequest(err.Message);
+            }
+
+
+            return Ok();
+        }
     }
 }
