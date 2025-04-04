@@ -55,7 +55,7 @@ namespace PatitasFelices.Server.Controllers
 
             if (Dummy == null)
             {
-                return NotFound("No existe el usuario buscado");
+                return NotFound("No existe el precio buscado");
             }
 
             Dummy.PrecioDia = entidad.PrecioDia;

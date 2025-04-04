@@ -54,7 +54,7 @@ namespace PatitasFelices.Server.Controllers
 
             if (Dummy == null)
             {
-                return NotFound("No existe el usuario buscado");
+                return NotFound("No existe La reserva buscada");
             }
 
             Dummy.FechaHoraInicio = entidad.FechaHoraInicio;

@@ -55,7 +55,7 @@ namespace PatitasFelices.Server.Controllers
 
             if (Dummy == null)
             {
-                return NotFound("No existe el usuario buscado");
+                return NotFound("No la foto de la mascota");
             }
 
             Dummy.UrlFoto = entidad.UrlFoto;
