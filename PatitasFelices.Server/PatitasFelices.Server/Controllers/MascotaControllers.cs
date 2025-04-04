@@ -41,5 +41,45 @@ namespace PatitasFelices.Server.Controllers
             }
         }
         #endregion
+
+        #region Método update
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult> Put(int id, [FromBody] Mascota entidad)
+        {
+            if (id != entidad.Id)
+            {
+                return BadRequest("Datos incorrectos");
+            }
+
+            var Dummy = await context.Mascota.Where(e => entidad.Id == id).FirstOrDefaultAsync();
+
+            if (Dummy == null)
+            {
+                return NotFound("No existe el usuario buscado");
+            }
+
+            Dummy.Nombre = entidad.Nombre;
+            Dummy.Raza = entidad.Raza;
+            Dummy.Edad = entidad.Edad;
+            Dummy.Tamaño = entidad.Tamaño;
+            Dummy.Foto = entidad.Foto;
+            Dummy.NecesidadesEspeciales = entidad.NecesidadesEspeciales;
+
+
+            try
+            {
+                context.Mascota.Update(Dummy);
+                await context.SaveChangesAsync();
+            }
+            catch (Exception err)
+            {
+
+                return BadRequest(err.Message);
+            }
+
+
+            return Ok();
+        }
+        #endregion
     }
 }

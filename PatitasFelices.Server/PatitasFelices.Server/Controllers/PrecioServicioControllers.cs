@@ -41,5 +41,42 @@ namespace PatitasFelices.Server.Controllers
             }
         }
         #endregion
+
+        #region Método update
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult> Put(int id, [FromBody] PrecioServicio entidad)
+        {
+            if (id != entidad.Id)
+            {
+                return BadRequest("Datos incorrectos");
+            }
+
+            var Dummy = await context.PrecioServicio.Where(e => entidad.Id == id).FirstOrDefaultAsync();
+
+            if (Dummy == null)
+            {
+                return NotFound("No existe el usuario buscado");
+            }
+
+            Dummy.NombreServicio = entidad.NombreServicio;
+            Dummy.Precio = entidad.Precio;
+           
+
+
+            try
+            {
+                context.PrecioServicio.Update(Dummy);
+                await context.SaveChangesAsync();
+            }
+            catch (Exception err)
+            {
+
+                return BadRequest(err.Message);
+            }
+
+
+            return Ok();
+        }
+        #endregion
     }
 }
