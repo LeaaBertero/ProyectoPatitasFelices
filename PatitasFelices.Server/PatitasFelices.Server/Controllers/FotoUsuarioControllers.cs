@@ -80,5 +80,25 @@ namespace PatitasFelices.Server.Controllers
         #endregion
 
         //método eliminar poner acá
+        #region Método Delete
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var existe = await context.FotoUsuario.AnyAsync(x => x.Id == id);
+
+            if (!existe)
+            {
+                return NotFound($"La foto del usuario {id} que se intenta borrar, no existe.");
+            }
+
+            FotoUsuario entidadBorrar = new FotoUsuario();
+            entidadBorrar.Id = id;
+
+            context.Remove(entidadBorrar);
+            await context.SaveChangesAsync();
+            return Ok();
+
+        }
+        #endregion
     }
 }
