@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PatitasFelices.BD.Data;
 using PatitasFelices.BD.Data.Entity;
+using PatitasFelices.Shared.DTO;
 
 namespace PatitasFelices.Server.Controllers
 {
@@ -10,10 +12,12 @@ namespace PatitasFelices.Server.Controllers
     public class ReservaControllers : ControllerBase
     {
         private readonly Context context;
+        private readonly IMapper mapper;
 
-        public ReservaControllers(Context context)
+        public ReservaControllers(Context context, IMapper mapper)
         {
             this.context = context;
+            this.mapper = mapper;
         }
 
         #region Método Get
@@ -26,10 +30,14 @@ namespace PatitasFelices.Server.Controllers
 
         #region Método Post
         [HttpPost]
-        public async Task<ActionResult<int>> Post(Reserva entidad)
+        public async Task<ActionResult<int>> Post(CrearReservaDTO entidadDTO)
         {
             try
             {
+                
+
+                Reserva entidad = mapper.Map<Reserva>(entidadDTO);
+
                 context.Reserva.Add(entidad);
                 await context.SaveChangesAsync();
                 return entidad.Id;
@@ -42,6 +50,7 @@ namespace PatitasFelices.Server.Controllers
         }
         #endregion
 
+        #region Put
         [HttpPut("{id:int}")]
         public async Task<ActionResult> Put(int id, [FromBody] Reserva entidad)
         {
@@ -76,6 +85,7 @@ namespace PatitasFelices.Server.Controllers
 
             return Ok();
         }
+        #endregion
 
         //metodo eliminar
         #region Método Delete
@@ -98,5 +108,9 @@ namespace PatitasFelices.Server.Controllers
 
         }
         #endregion
+
+      
+
+       
     }
 }

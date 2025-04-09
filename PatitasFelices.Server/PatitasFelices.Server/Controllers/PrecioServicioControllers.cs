@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PatitasFelices.BD.Data;
 using PatitasFelices.BD.Data.Entity;
+using PatitasFelices.Shared.DTO;
 
 namespace PatitasFelices.Server.Controllers
 {
@@ -10,10 +12,12 @@ namespace PatitasFelices.Server.Controllers
     public class PrecioServicioControllers : ControllerBase
     {
         private readonly Context context;
+        private readonly IMapper mapper;
 
-        public PrecioServicioControllers(Context context)
+        public PrecioServicioControllers(Context context, IMapper mapper)
         {
             this.context = context;
+            this.mapper = mapper;
         }
 
         #region Método Get
@@ -26,20 +30,24 @@ namespace PatitasFelices.Server.Controllers
 
         #region Método Post
         [HttpPost]
-        public async Task<ActionResult<int>> Post(Precio entidad)
+        public async Task<ActionResult<int>> Post(CrearPrecioServicioDTO entidadDTO)
         {
             try
             {
-                context.Precio.Add(entidad);
+               
+
+                PrecioServicio entidad = mapper.Map<PrecioServicio>(entidadDTO);
+
+                context.PrecioServicio.Add(entidad); // Fixed line
                 await context.SaveChangesAsync();
                 return entidad.Id;
             }
             catch (Exception err)
             {
-
                 return BadRequest(err.Message);
             }
         }
+
         #endregion
 
         #region Método update

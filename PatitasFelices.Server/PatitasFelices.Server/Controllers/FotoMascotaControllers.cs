@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PatitasFelices.BD.Data;
 using PatitasFelices.BD.Data.Entity;
+using PatitasFelices.Shared.DTO;
 
 namespace PatitasFelices.Server.Controllers
 {
@@ -10,10 +12,12 @@ namespace PatitasFelices.Server.Controllers
     public class FotoMascotaControllers : ControllerBase
     {
         private readonly Context context;
+        private readonly IMapper mapper;
 
-        public FotoMascotaControllers(Context context)
+        public FotoMascotaControllers(Context context, IMapper mapper)
         {
             this.context = context;
+            this.mapper = mapper;
         }
 
         #region Método Get
@@ -26,10 +30,14 @@ namespace PatitasFelices.Server.Controllers
 
         #region Método Post
         [HttpPost]
-        public async Task<ActionResult<int>> Post(FotoMascota entidad)
+        public async Task<ActionResult<int>> Post(CrearFotoMascotaDTO entidadDTO)
         {
             try
             {
+              
+
+                FotoMascota entidad = mapper.Map<FotoMascota>(entidadDTO);
+
                 context.FotoMascota.Add(entidad);
                 await context.SaveChangesAsync();
                 return entidad.Id;
