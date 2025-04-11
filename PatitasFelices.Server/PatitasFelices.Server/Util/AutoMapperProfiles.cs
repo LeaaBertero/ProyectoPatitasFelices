@@ -6,17 +6,17 @@ namespace PatitasFelices.Server.Util
 {
     public class AutoMapperProfiles : Profile
     {
-        protected AutoMapperProfiles()
+        public AutoMapperProfiles()
         {
             CreateMap<CrearUsuarioDTO, Usuario>();
             CreateMap<Usuario, CrearUsuarioDTO>();
 
             CreateMap<CrearTransaccionDTO, Transaccion>();
             CreateMap<Transaccion, CrearTransaccionDTO>();
-            
+
             CreateMap<CrearTarjetaDTO, Tarjeta>();
-            CreateMap<Tarjeta, CrearTarjetaDTO>(); 
-            
+            CreateMap<Tarjeta, CrearTarjetaDTO>();
+
             CreateMap<CrearServicioDTO, Servicio>();
             CreateMap<Servicio, CrearServicioDTO>();
 
@@ -52,6 +52,13 @@ namespace PatitasFelices.Server.Util
 
         }
 
-       
+        
     }
 }
+
+
+
+
+
+
+       

@@ -38,7 +38,7 @@ namespace PatitasFelices.Server.Controllers
 
                 PrecioServicio entidad = mapper.Map<PrecioServicio>(entidadDTO);
 
-                context.PrecioServicio.Add(entidad); // Fixed line
+                context.PrecioServicio.Add(entidad); 
                 await context.SaveChangesAsync();
                 return entidad.Id;
             }

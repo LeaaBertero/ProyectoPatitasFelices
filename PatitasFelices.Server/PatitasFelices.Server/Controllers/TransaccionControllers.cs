@@ -18,7 +18,7 @@ namespace PatitasFelices.Server.Controllers
         public TransaccionControllers(Context context, IMapper Mapper)
         {
             this.context = context;
-            mapper = Mapper;
+            this.mapper = Mapper;
         }
         #endregion
 

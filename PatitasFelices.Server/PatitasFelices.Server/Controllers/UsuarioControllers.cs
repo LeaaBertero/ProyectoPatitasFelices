@@ -15,7 +15,7 @@ namespace PatitasFelices.Server.Controllers
         private readonly IMapper mapper;
 
         #region Constructor
-        public UsuarioControllers( Context context, IMapper mapper)
+        public UsuarioControllers(Context context, IMapper mapper)
 
         {
             this.context = context;
