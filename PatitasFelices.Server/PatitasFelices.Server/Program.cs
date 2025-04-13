@@ -19,6 +19,9 @@ builder.Services.AddDbContext<Context>(op => op.UseSqlServer("name=conn"));
 builder.Services.AddAutoMapper(typeof(Program));
 #endregion
 
+
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

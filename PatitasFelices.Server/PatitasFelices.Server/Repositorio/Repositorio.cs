@@ -7,12 +7,12 @@ using PatitasFelices.Shared.DTO;
 
 namespace PatitasFelices.Server.Repositorio
 {
-    public class Repositorio<E> : where E : class, IEntityBase
+    public class Repositorio<E> :  IRepositorio<E> where E : class, IEntityBase
     {
         private readonly Context context;
 
         #region Constructor
-        public Repositorio(Context context) 
+        public Repositorio(Context context)
         {
             this.context = context;
         }
@@ -88,7 +88,7 @@ namespace PatitasFelices.Server.Repositorio
 
         #region Borrar
         public async Task<bool> Borrar(int id)
-        {                                           
+        {
             var lean = await SelectById(id);
 
             if (lean == null)
@@ -110,4 +110,5 @@ namespace PatitasFelices.Server.Repositorio
         }
         #endregion
     }
+
 }
