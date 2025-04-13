@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using PatitasFelices.BD.Data;
+using PatitasFelices.BD.Data.Entity;
+using PatitasFelices.Server.Repositorio;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,8 +21,22 @@ builder.Services.AddDbContext<Context>(op => op.UseSqlServer("name=conn"));
 builder.Services.AddAutoMapper(typeof(Program));
 #endregion
 
-
-
+#region Servicios de las interfaz de las entidades
+builder.Services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
+builder.Services.AddScoped<ITransaccionRepositorio, TransaccionRepositorio>();
+builder.Services.AddScoped<ITarjetaRepositorio, TarjetaRepositorio>();
+builder.Services.AddScoped<IServicioRepositorio, ServicioRepositorio>();
+builder.Services.AddScoped<IReservaRepositorio, ReservaRepositorio>();
+builder.Services.AddScoped<IPrecioServicio, PrecioServicioRepositorio>();
+builder.Services.AddScoped<IPrecioRepositorio, PrecioRepositorio>();
+builder.Services.AddScoped<INombreServicio, NombreServicioRepositorio>();
+builder.Services.AddScoped<IMensajeRepositorio, MensajeRepositorio>();
+builder.Services.AddScoped<IMascotaRepositorio, MascotaRepositorio>();
+builder.Services.AddScoped<IFotoUsuarioRepositorio, FotoUsuarioRepositorio>();
+builder.Services.AddScoped<IFotoMascotaRepositiorio, FotoMascotaRepositorio>();
+builder.Services.AddScoped<IFotoRepositorio, FotoRepositorio>();
+builder.Services.AddScoped<IComentarioRepositorio, ComentarioRepositorio>();
+#endregion
 
 var app = builder.Build();
 
