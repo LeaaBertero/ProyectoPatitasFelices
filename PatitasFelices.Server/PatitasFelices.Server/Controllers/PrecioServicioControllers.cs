@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PatitasFelices.BD.Data;
 using PatitasFelices.BD.Data.Entity;
+using PatitasFelices.Server.Repositorio;
 using PatitasFelices.Shared.DTO;
 
 namespace PatitasFelices.Server.Controllers
@@ -11,12 +12,12 @@ namespace PatitasFelices.Server.Controllers
     [Route("api/PrecioServicio")]
     public class PrecioServicioControllers : ControllerBase
     {
-        private readonly Context context;
+        private readonly IPrecioServicioRepositorio repositorio;
         private readonly IMapper mapper;
 
-        public PrecioServicioControllers(Context context, IMapper mapper)
+        public PrecioServicioControllers(IPrecioServicioRepositorio repositorio, IMapper mapper)
         {
-            this.context = context;
+            this.repositorio = repositorio;
             this.mapper = mapper;
         }
 
@@ -24,7 +25,7 @@ namespace PatitasFelices.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<List<PrecioServicio>>> Get()
         {
-            return await context.PrecioServicio.ToListAsync();
+            return await repositorio.Select();
         }
         #endregion
 
@@ -34,13 +35,12 @@ namespace PatitasFelices.Server.Controllers
         {
             try
             {
-               
+
+
 
                 PrecioServicio entidad = mapper.Map<PrecioServicio>(entidadDTO);
 
-                context.PrecioServicio.Add(entidad); 
-                await context.SaveChangesAsync();
-                return entidad.Id;
+                return await repositorio.Insert(entidad);
             }
             catch (Exception err)
             {
@@ -59,22 +59,23 @@ namespace PatitasFelices.Server.Controllers
                 return BadRequest("Datos incorrectos");
             }
 
-            var Dummy = await context.PrecioServicio.Where(e => entidad.Id == id).FirstOrDefaultAsync();
+            var Dummy = await repositorio.SelectById(id);
 
             if (Dummy == null)
             {
-                return NotFound("El precio del servicio, no existe");
+                return NotFound("No existen precios cargados");
             }
 
             Dummy.NombreServicio = entidad.NombreServicio;
             Dummy.Precio = entidad.Precio;
-           
+            
 
 
             try
             {
-                context.PrecioServicio.Update(Dummy);
-                await context.SaveChangesAsync();
+                await repositorio.Update(id, Dummy);
+
+                return Ok();
             }
             catch (Exception err)
             {
@@ -83,8 +84,34 @@ namespace PatitasFelices.Server.Controllers
             }
 
 
-            return Ok();
+            //return Ok();
+        }
+        #endregion
+
+        //metodo eliminar
+        #region Método Delete
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var existe = await repositorio.Existe(id);
+
+            if (!existe)
+            {
+                return NotFound($"El precio del servicio {id} que se intenta borrar, no existe.");
+            }
+            if (await repositorio.Borrar(id))
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest($"El precio del servicio {id} no se pudo borrar.");
+            }
+
+
+
         }
         #endregion
     }
+    
 }

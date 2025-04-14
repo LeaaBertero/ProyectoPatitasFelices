@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PatitasFelices.BD.Data;
 using PatitasFelices.BD.Data.Entity;
+using PatitasFelices.Server.Repositorio;
 using PatitasFelices.Shared.DTO;
 
 namespace PatitasFelices.Server.Controllers
@@ -11,12 +12,12 @@ namespace PatitasFelices.Server.Controllers
     [Route("api/Foto")]
     public class FotoControllers : ControllerBase
     {
-        private readonly Context context;
+        private readonly IFotoRepositorio repositorio;
         private readonly IMapper mapper;
 
-        public FotoControllers(Context context, IMapper mapper)
+        public FotoControllers(IFotoRepositorio repositorio, IMapper mapper)
         {
-            this.context = context;
+            this.repositorio = repositorio;
             this.mapper = mapper;
         }
 
@@ -24,7 +25,7 @@ namespace PatitasFelices.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Foto>>> Get()
         {
-            return await context.Foto.ToListAsync();
+            return await repositorio.Select();
         }
         #endregion
 
@@ -38,9 +39,7 @@ namespace PatitasFelices.Server.Controllers
 
                 Foto entidad = mapper.Map<Foto>(entidadDTO);
 
-                context.Foto.Add(entidad); 
-                await context.SaveChangesAsync();
-                return entidad.Id;
+                return await repositorio.Insert(entidad);
             }
             catch (Exception err)
             {
@@ -53,19 +52,20 @@ namespace PatitasFelices.Server.Controllers
         [HttpDelete("{id:int}")]
         public async Task<ActionResult> Delete(int id)
         {
-            var existe = await context.Foto.AnyAsync(x => x.Id == id);
+            var existe = await repositorio.Existe(id);
 
             if (!existe)
             {
-                return NotFound($"La foto {id} que se intenta borrar, no existe.");
+                return NotFound($"La foto {id} que se intenta eliminar, no existe.");
             }
-
-            Foto entidadBorrar = new Foto();
-            entidadBorrar.Id = id;
-
-            context.Remove(entidadBorrar);
-            await context.SaveChangesAsync();
-            return Ok();
+            if (await repositorio.Borrar(id))
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest($"La foto {id} no se pudo eliminar.");
+            }
 
         }
         #endregion

@@ -2,7 +2,7 @@
 
 namespace PatitasFelices.Server.Repositorio
 {
-    public interface INombreServicio : IRepositorio<NombreServicio>
+    public interface INombreServicioRepositorio : IRepositorio<NombreServicio>
     {
     }
 }

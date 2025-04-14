@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PatitasFelices.BD.Data;
 using PatitasFelices.BD.Data.Entity;
+using PatitasFelices.Server.Repositorio;
 using PatitasFelices.Shared.DTO;
 
 namespace PatitasFelices.Server.Controllers
@@ -11,12 +12,12 @@ namespace PatitasFelices.Server.Controllers
     [Route("api/FotoMascota")]
     public class FotoMascotaControllers : ControllerBase
     {
-        private readonly Context context;
+        private readonly IFotoMascotaRepositiorio repositorio;
         private readonly IMapper mapper;
 
-        public FotoMascotaControllers(Context context, IMapper mapper)
+        public FotoMascotaControllers(IFotoMascotaRepositiorio repositorio, IMapper mapper)
         {
-            this.context = context;
+            this.repositorio = repositorio;
             this.mapper = mapper;
         }
 
@@ -24,7 +25,7 @@ namespace PatitasFelices.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<List<FotoMascota>>> Get()
         {
-            return await context.FotoMascota.ToListAsync();
+            return await repositorio.Select();
         }
         #endregion
 
@@ -38,9 +39,7 @@ namespace PatitasFelices.Server.Controllers
 
                 FotoMascota entidad = mapper.Map<FotoMascota>(entidadDTO);
 
-                context.FotoMascota.Add(entidad);
-                await context.SaveChangesAsync();
-                return entidad.Id;
+                return await repositorio.Insert(entidad);
             }
             catch (Exception err)
             {
@@ -59,31 +58,30 @@ namespace PatitasFelices.Server.Controllers
                 return BadRequest("Datos incorrectos");
             }
 
-            var Dummy = await context.FotoMascota.Where(e => entidad.Id == id).FirstOrDefaultAsync();
+            var Dummy = await repositorio.SelectById(id);
 
             if (Dummy == null)
             {
-                return NotFound("No la foto de la mascota");
+                return NotFound("No existe la foto mascota buscada");
             }
 
             Dummy.UrlFoto = entidad.UrlFoto;
             Dummy.Descripcion = entidad.Descripcion;
-           
+
+
 
 
             try
             {
-                context.FotoMascota.Update(Dummy);
-                await context.SaveChangesAsync();
+                await repositorio.Update(id, Dummy);
+
+                return Ok();
             }
             catch (Exception err)
             {
 
                 return BadRequest(err.Message);
             }
-
-
-            return Ok();
         }
         #endregion
 
@@ -92,19 +90,20 @@ namespace PatitasFelices.Server.Controllers
         [HttpDelete("{id:int}")]
         public async Task<ActionResult> Delete(int id)
         {
-            var existe = await context.FotoMascota.AnyAsync(x => x.Id == id);
+            var existe = await repositorio.Existe(id);
 
             if (!existe)
             {
-                return NotFound($"La foto de la mascota {id} que se intenta borrar, no existe.");
+                return NotFound($"La foto de la mascota {id} que se intenta eliminar, no existe.");
             }
-
-            FotoMascota entidadBorrar = new FotoMascota();
-            entidadBorrar.Id = id;
-
-            context.Remove(entidadBorrar);
-            await context.SaveChangesAsync();
-            return Ok();
+            if (await repositorio.Borrar(id))
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest($"La foto de la mascota {id} no se pudo eliminar.");
+            }
 
         }
         #endregion

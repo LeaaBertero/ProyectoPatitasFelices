@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PatitasFelices.BD.Data;
 using PatitasFelices.BD.Data.Entity;
+using PatitasFelices.Server.Repositorio;
 using PatitasFelices.Shared.DTO;
 
 namespace PatitasFelices.Server.Controllers
@@ -11,12 +12,12 @@ namespace PatitasFelices.Server.Controllers
     [Route("api/Comentario")]
     public class ComentarioControllers : ControllerBase
     {
-        private readonly Context context;
+        private readonly IComentarioRepositorio repositorio;
         private readonly IMapper mapper;
 
-        public ComentarioControllers(Context context, IMapper mapper)
+        public ComentarioControllers(IComentarioRepositorio repositorio, IMapper mapper)
         {
-            this.context = context;
+            this.repositorio = repositorio;
             this.mapper = mapper;
         }
 
@@ -24,7 +25,7 @@ namespace PatitasFelices.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Comentario>>> Get()
         {
-            return await context.Comentario.ToListAsync();
+            return await repositorio.Select();
         }
         #endregion
 
@@ -39,9 +40,7 @@ namespace PatitasFelices.Server.Controllers
                 Comentario entidad = mapper.Map<Comentario>(entidadDTO);
 
 
-                context.Comentario.Add(entidad);
-                await context.SaveChangesAsync();
-                return entidad.Id;
+                return await repositorio.Insert(entidad);
             }
             catch (Exception err)
             {
@@ -55,19 +54,20 @@ namespace PatitasFelices.Server.Controllers
         [HttpDelete("{id:int}")]
         public async Task<ActionResult> Delete(int id)
         {
-            var existe = await context.Comentario.AnyAsync(x => x.Id == id);
+            var existe = await repositorio.Existe(id);
 
             if (!existe)
             {
-                return NotFound($"El comentario {id} que se intenta borrar, no existe.");
+                return NotFound($"El comentario {id} que se intenta eliminar, no existe.");
             }
-
-            Comentario entidadBorrar = new Comentario();
-            entidadBorrar.Id = id;
-
-            context.Remove(entidadBorrar);
-            await context.SaveChangesAsync();
-            return Ok();
+            if (await repositorio.Borrar(id))
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest($"El comentario {id} no se pudo eliminar.");
+            }
 
         }
         #endregion

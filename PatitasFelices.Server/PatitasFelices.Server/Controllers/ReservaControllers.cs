@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PatitasFelices.BD.Data;
 using PatitasFelices.BD.Data.Entity;
+using PatitasFelices.Server.Repositorio;
 using PatitasFelices.Shared.DTO;
 
 namespace PatitasFelices.Server.Controllers
@@ -11,12 +12,12 @@ namespace PatitasFelices.Server.Controllers
     [Route("api/Reserva")]
     public class ReservaControllers : ControllerBase
     {
-        private readonly Context context;
+        private readonly IReservaRepositorio repositorio;
         private readonly IMapper mapper;
 
-        public ReservaControllers(Context context, IMapper mapper)
+        public ReservaControllers(IReservaRepositorio repositorio, IMapper mapper)
         {
-            this.context = context;
+            this.repositorio = repositorio;
             this.mapper = mapper;
         }
 
@@ -24,7 +25,7 @@ namespace PatitasFelices.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Reserva>>> Get()
         {
-            return await context.Reserva.ToListAsync();
+            return await repositorio.Select();
         }
         #endregion
 
@@ -38,9 +39,7 @@ namespace PatitasFelices.Server.Controllers
 
                 Reserva entidad = mapper.Map<Reserva>(entidadDTO);
 
-                context.Reserva.Add(entidad);
-                await context.SaveChangesAsync();
-                return entidad.Id;
+                return await repositorio.Insert(entidad);
             }
             catch (Exception err)
             {
@@ -59,7 +58,7 @@ namespace PatitasFelices.Server.Controllers
                 return BadRequest("Datos incorrectos");
             }
 
-            var Dummy = await context.Reserva.Where(e => entidad.Id == id).FirstOrDefaultAsync();
+            var Dummy = await repositorio.SelectById(id);
 
             if (Dummy == null)
             {
@@ -73,8 +72,9 @@ namespace PatitasFelices.Server.Controllers
 
             try
             {
-                context.Reserva.Update(Dummy);
-                await context.SaveChangesAsync();
+                await repositorio.Update(id, Dummy);
+
+                return Ok();
             }
             catch (Exception err)
             {
@@ -83,7 +83,7 @@ namespace PatitasFelices.Server.Controllers
             }
 
 
-            return Ok();
+            //return Ok();
         }
         #endregion
 
@@ -92,19 +92,22 @@ namespace PatitasFelices.Server.Controllers
         [HttpDelete("{id:int}")]
         public async Task<ActionResult> Delete(int id)
         {
-            var existe = await context.Reserva.AnyAsync(x => x.Id == id);
+            var existe = await repositorio.Existe(id);
 
             if (!existe)
             {
                 return NotFound($"La reserva {id} que se intenta borrar, no existe.");
             }
+            if (await repositorio.Borrar(id)) 
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest($"La reserva {id} no se pudo borrar.");
+            }
 
-            Reserva entidadBorrar = new Reserva();
-            entidadBorrar.Id = id;
 
-            context.Remove(entidadBorrar);
-            await context.SaveChangesAsync();
-            return Ok();
 
         }
         #endregion

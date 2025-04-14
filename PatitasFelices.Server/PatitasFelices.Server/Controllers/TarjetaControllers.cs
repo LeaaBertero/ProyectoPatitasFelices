@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PatitasFelices.BD.Data;
 using PatitasFelices.BD.Data.Entity;
+using PatitasFelices.Server.Repositorio;
 using PatitasFelices.Shared.DTO;
 
 namespace PatitasFelices.Server.Controllers
@@ -11,20 +12,22 @@ namespace PatitasFelices.Server.Controllers
     [Route("api/Tarjeta")]
     public class TarjetaControllers : ControllerBase
     {
-        private readonly Context context;
+        private readonly ITarjetaRepositorio repositorio;
         private readonly IMapper mapper;
 
-        public TarjetaControllers(Context context, IMapper mapper)
+        #region Constructor
+        public TarjetaControllers(ITarjetaRepositorio repositorio ,IMapper mapper)
         {
-            this.context = context;
+            this.repositorio = repositorio;
             this.mapper = mapper;
         }
+        #endregion
 
         #region Método Get
         [HttpGet]
         public async Task<ActionResult<List<Tarjeta>>> Get()
         {
-            return await context.Tarjeta.ToListAsync();
+            return await repositorio.Select();
         }
         #endregion
 
@@ -38,9 +41,8 @@ namespace PatitasFelices.Server.Controllers
 
                 Tarjeta entidad = mapper.Map<Tarjeta>(entidadDTO);
 
-                context.Tarjeta.Add(entidad);
-                await context.SaveChangesAsync();
-                return entidad.Id;
+                
+                return await repositorio.Insert(entidad);
             }
             catch (Exception err)
             {
@@ -59,7 +61,7 @@ namespace PatitasFelices.Server.Controllers
                 return BadRequest("Datos incorrectos");
             }
 
-            var Dummy = await context.Tarjeta.Where(e => entidad.Id == id).FirstOrDefaultAsync();
+            var Dummy = await repositorio.SelectById(id);
 
             if (Dummy == null)
             {
@@ -74,8 +76,9 @@ namespace PatitasFelices.Server.Controllers
 
             try
             {
-                context.Tarjeta.Update(Dummy);
-                await context.SaveChangesAsync();
+                await repositorio.Update(id, Dummy);
+
+                return Ok();
             }
             catch (Exception err)
             {

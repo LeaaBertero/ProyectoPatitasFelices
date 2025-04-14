@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PatitasFelices.BD.Data;
 using PatitasFelices.BD.Data.Entity;
+using PatitasFelices.Server.Repositorio;
 using PatitasFelices.Shared.DTO;
 
 namespace PatitasFelices.Server.Controllers
@@ -11,12 +12,12 @@ namespace PatitasFelices.Server.Controllers
     [Route("api/FotoUsuario")]
     public class FotoUsuarioControllers : ControllerBase
     {
-        private readonly Context context;
+        private readonly IFotoUsuarioRepositorio repositorio;
         private readonly IMapper mapper;
 
-        public FotoUsuarioControllers(Context context, IMapper mapper)
+        public FotoUsuarioControllers(IFotoUsuarioRepositorio repositorio, IMapper mapper)
         {
-            this.context = context;
+            this.repositorio = repositorio;
             this.mapper = mapper;
         }
 
@@ -24,7 +25,7 @@ namespace PatitasFelices.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<List<FotoUsuario>>> Get()
         {
-            return await context.FotoUsuario.ToListAsync();
+            return await repositorio.Select();
         }
         #endregion
 
@@ -38,9 +39,7 @@ namespace PatitasFelices.Server.Controllers
 
                 FotoUsuario entidad = mapper.Map<FotoUsuario>(entidadDTO);
 
-                context.FotoUsuario.Add(entidad);
-                await context.SaveChangesAsync();
-                return entidad.Id;
+                return await repositorio.Insert(entidad);
             }
             catch (Exception err)
             {
@@ -59,11 +58,11 @@ namespace PatitasFelices.Server.Controllers
                 return BadRequest("Datos incorrectos");
             }
 
-            var Dummy = await context.FotoUsuario.Where(e => entidad.Id == id).FirstOrDefaultAsync();
+            var Dummy = await repositorio.SelectById(id);
 
             if (Dummy == null)
             {
-                return NotFound("No existe la foto del usuario");
+                return NotFound("No existe la foto usuario buscada");
             }
 
             Dummy.UrlFoto = entidad.UrlFoto;
@@ -71,19 +70,18 @@ namespace PatitasFelices.Server.Controllers
            
 
 
+
             try
             {
-                context.FotoUsuario.Update(Dummy);
-                await context.SaveChangesAsync();
+                await repositorio.Update(id, Dummy);
+
+                return Ok();
             }
             catch (Exception err)
             {
 
                 return BadRequest(err.Message);
             }
-
-
-            return Ok();
         }
         #endregion
 
@@ -92,19 +90,20 @@ namespace PatitasFelices.Server.Controllers
         [HttpDelete("{id:int}")]
         public async Task<ActionResult> Delete(int id)
         {
-            var existe = await context.FotoUsuario.AnyAsync(x => x.Id == id);
+            var existe = await repositorio.Existe(id);
 
             if (!existe)
             {
-                return NotFound($"La foto del usuario {id} que se intenta borrar, no existe.");
+                return NotFound($"La foto usuario {id} que se intenta borrar, no existe.");
             }
-
-            FotoUsuario entidadBorrar = new FotoUsuario();
-            entidadBorrar.Id = id;
-
-            context.Remove(entidadBorrar);
-            await context.SaveChangesAsync();
-            return Ok();
+            if (await repositorio.Borrar(id))
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest($"La foto usuario {id} no se pudo borrar.");
+            }
 
         }
         #endregion

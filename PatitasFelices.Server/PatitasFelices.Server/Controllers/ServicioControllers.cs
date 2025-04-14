@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PatitasFelices.BD.Data;
 using PatitasFelices.BD.Data.Entity;
+using PatitasFelices.Server.Repositorio;
 using PatitasFelices.Shared.DTO;
 
 namespace PatitasFelices.Server.Controllers
@@ -11,12 +12,12 @@ namespace PatitasFelices.Server.Controllers
     [Route("api/Servicio")]
     public class ServicioControllers : ControllerBase
     {
-        private readonly Context context;
+        private readonly IServicioRepositorio repositorio;
         private readonly IMapper mapper;
 
-        public ServicioControllers(Context context, IMapper mapper)
+        public ServicioControllers(IServicioRepositorio repositorio, IMapper mapper)
         {
-            this.context = context;
+            this.repositorio = repositorio;
             this.mapper = mapper;
         }
 
@@ -24,7 +25,7 @@ namespace PatitasFelices.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Servicio>>> Get()
         {
-            return await context.Servicio.ToListAsync();
+            return await repositorio.Select();
         }
         #endregion
 
@@ -34,12 +35,11 @@ namespace PatitasFelices.Server.Controllers
         {
             try
             {
-              
+
                 Servicio entidad = mapper.Map<Servicio>(entidadDTO);
 
-                context.Servicio.Add(entidad);
-                await context.SaveChangesAsync();
-                return entidad.Id;
+
+                return await repositorio.Insert(entidad);
             }
             catch (Exception err)
             {

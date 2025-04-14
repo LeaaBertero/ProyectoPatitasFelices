@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PatitasFelices.BD.Data;
 using PatitasFelices.BD.Data.Entity;
+using PatitasFelices.Server.Repositorio;
 using PatitasFelices.Shared.DTO;
 
 namespace PatitasFelices.Server.Controllers
@@ -11,12 +12,12 @@ namespace PatitasFelices.Server.Controllers
     [Route("api/Precio")]
     public class PrecioControllers : ControllerBase
     {
-        private readonly Context context;
+        private readonly IPrecioRepositorio repositorio;
         private readonly IMapper mapper;
 
-        public PrecioControllers(Context context, IMapper mapper)
+        public PrecioControllers(IPrecioRepositorio repositorio, IMapper mapper)
         {
-            this.context = context;
+            this.repositorio = repositorio;
             this.mapper = mapper;
         }
 
@@ -24,7 +25,7 @@ namespace PatitasFelices.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Precio>>> Get()
         {
-            return await context.Precio.ToListAsync();
+            return await repositorio.Select();
         }
         #endregion
 
@@ -39,9 +40,8 @@ namespace PatitasFelices.Server.Controllers
                 Precio entidad = mapper.Map<Precio>(entidadDTO);
 
 
-                context.Precio.Add(entidad);
-                await context.SaveChangesAsync();
-                return entidad.Id;
+
+                return await repositorio.Insert(entidad);
             }
             catch (Exception err)
             {
@@ -60,22 +60,23 @@ namespace PatitasFelices.Server.Controllers
                 return BadRequest("Datos incorrectos");
             }
 
-            var Dummy = await context.Precio.Where(e => entidad.Id == id).FirstOrDefaultAsync();
+            var Dummy = await repositorio.SelectById(id);
 
             if (Dummy == null)
             {
                 return NotFound("No existe el precio buscado");
             }
 
-            Dummy.PrecioDia = entidad.PrecioDia;
             Dummy.PrecioHora = entidad.PrecioHora;
-           
+            Dummy.PrecioDia = entidad.PrecioDia;
+          
 
 
             try
             {
-                context.Precio.Update(Dummy);
-                await context.SaveChangesAsync();
+                await repositorio.Update(id, Dummy);
+
+                return Ok();
             }
             catch (Exception err)
             {
@@ -84,7 +85,29 @@ namespace PatitasFelices.Server.Controllers
             }
 
 
-            return Ok();
+            //return Ok();
+        }
+        #endregion
+
+        //metodo eliminar
+        #region Método Delete
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var existe = await repositorio.Existe(id);
+
+            if (!existe)
+            {
+                return NotFound($"El precio {id} que se intenta borrar, no existe.");
+            }
+            if (await repositorio.Borrar(id))
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest($"El precio {id} no se pudo borrar.");
+            }
         }
         #endregion
     }
