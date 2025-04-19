@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatitasFelices.BD", "Patita
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatitasFelices.Shared", "PatitasFelices.Shared\PatitasFelices.Shared.csproj", "{633DFF67-1C1A-4581-861A-364E14B44DCE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatitasFelices.Client", "PatitasFelices.Client\PatitasFelices.Client.csproj", "{28BC6FB3-8986-4FC5-B131-6852955A1097}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,6 +28,10 @@ Global
 		{633DFF67-1C1A-4581-861A-364E14B44DCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{633DFF67-1C1A-4581-861A-364E14B44DCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{633DFF67-1C1A-4581-861A-364E14B44DCE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28BC6FB3-8986-4FC5-B131-6852955A1097}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28BC6FB3-8986-4FC5-B131-6852955A1097}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28BC6FB3-8986-4FC5-B131-6852955A1097}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28BC6FB3-8986-4FC5-B131-6852955A1097}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

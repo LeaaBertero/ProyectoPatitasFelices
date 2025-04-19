@@ -2,8 +2,17 @@ using Microsoft.EntityFrameworkCore;
 using PatitasFelices.BD.Data;
 using PatitasFelices.BD.Data.Entity;
 using PatitasFelices.Server.Repositorio;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
+
+#region igmore cycles
+builder.Services.AddControllers().AddJsonOptions(
+    x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+#endregion
+
+builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
 
 // Add services to the container.
 
@@ -17,9 +26,12 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<Context>(op => op.UseSqlServer("name=conn"));
 #endregion
 
+
+
 #region AutoMapper
 builder.Services.AddAutoMapper(typeof(Program));
 #endregion
+
 
 #region Servicios de las interfaz de las entidades
 builder.Services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
@@ -48,9 +60,20 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseBlazorFrameworkFiles();
+app.UseStaticFiles();
+app.UseRouting();
+app.MapRazorPages();
+
 
 app.UseAuthorization();
 
 app.MapControllers();
 
+app.MapFallbackToFile("index.html");
 app.Run();
+
+
+
+
+
