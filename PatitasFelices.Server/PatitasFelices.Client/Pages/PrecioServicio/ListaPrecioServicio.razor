@@ -1,19 +1,18 @@
-﻿@page "/Api/ListaReservas"
+﻿@page "/Api/ListaPrecioServicio"
 @inject IHTTPServicio http;
 @inject NavigationManager navigationManager;
 
 <!DOCTYPE html>
 <html>
-    
+
     <head>
-        <title>Lista de reservas</title>
+        <title>Lista de Precios de los servicios</title>
     </head>
 
     <body>
 
         <header>
-
-            <h1>Lista de reservas</h1>
+            <h1>Lista de precios de los servicios </h1>
             <table>
 
                 <tr>
@@ -22,39 +21,40 @@
                     <th>Estado de la reserva</th>
                 </tr>
 
-                @if (listareservas == null)
+                @if (listaprecioservicio == null)
                 {
                     <p>Buscando...</p>
                 }
                 else
                 {
-                    @foreach (var item in listareservas)
+                    @foreach (var item in listaprecioservicio)
                     {
                         <tr>
-                            <td>@item.FechaHoraInicio</td>
-                            <td>@item.FechaHoraFin</td>
-                            <td>@item.EstadoReserva</td>
+                            <td>@item.NombreServicio</td>
+                            <td>@item.Precio</td>
                         </tr>
                     }
                 }
+                        
 
             </table>
 
         </header>
-        
+    
         <main>
 
         </main>
-        
+    
         <footer>
 
         </footer>
     
     </body>
+
 </html>
 
 @code {
-    List<Reserva> listareservas;
+    List<PrecioServicio> listaprecioservicio;
 
     protected override async Task OnInitializedAsync()
     {
@@ -65,8 +65,8 @@
 
     private async Task Leer()
     {
-        var respuesta = await http.Get<List<Reserva>>("api/Reserva");
+        var respuesta = await http.Get<List<PrecioServicio>>("api/PrecioServicio");
 
-        listareservas = respuesta.Respuesta;
+        listaprecioservicio = respuesta.Respuesta;
     }
 }

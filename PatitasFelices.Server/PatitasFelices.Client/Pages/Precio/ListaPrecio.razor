@@ -1,39 +1,37 @@
-﻿@page "/Api/ListaReservas"
+﻿@page "/Api/ListaPrecio"
 @inject IHTTPServicio http;
 @inject NavigationManager navigationManager;
 
 <!DOCTYPE html>
 <html>
-    
-    <head>
-        <title>Lista de reservas</title>
+
+    <head>  
+        <title>Lista de precios</title>
     </head>
 
     <body>
 
         <header>
+            <h1>Lista de precios de los servicios</h1>
 
-            <h1>Lista de reservas</h1>
             <table>
 
                 <tr>
-                    <th>Fecha inicio</th>
-                    <th>Fecha fin</th>
-                    <th>Estado de la reserva</th>
+                    <th>Precio por hora</th>
+                    <th>Precio por dia</th>
                 </tr>
 
-                @if (listareservas == null)
+                @if (listaprecio == null)
                 {
                     <p>Buscando...</p>
                 }
                 else
                 {
-                    @foreach (var item in listareservas)
+                    @foreach (var item in listaprecio)
                     {
                         <tr>
-                            <td>@item.FechaHoraInicio</td>
-                            <td>@item.FechaHoraFin</td>
-                            <td>@item.EstadoReserva</td>
+                            <td>@item.PrecioHora</td>
+                            <td>@item.PrecioDia</td>
                         </tr>
                     }
                 }
@@ -45,16 +43,18 @@
         <main>
 
         </main>
-        
+
         <footer>
 
+            <p>® Todos los derechos reservados ®</p>
         </footer>
     
     </body>
+
 </html>
 
 @code {
-    List<Reserva> listareservas;
+    List<Precio> listaprecio;
 
     protected override async Task OnInitializedAsync()
     {
@@ -65,8 +65,8 @@
 
     private async Task Leer()
     {
-        var respuesta = await http.Get<List<Reserva>>("api/Reserva");
+        var respuesta = await http.Get<List<Precio>>("api/Precio");
 
-        listareservas = respuesta.Respuesta;
+        listaprecio = respuesta.Respuesta;
     }
 }
