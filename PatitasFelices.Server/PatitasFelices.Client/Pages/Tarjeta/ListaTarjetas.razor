@@ -1,0 +1,74 @@
+﻿@page "/Api/ListaTarjeta"
+@inject IHTTPServicio http;
+@inject NavigationManager navigationManager;
+
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Mis tarjetas - Lista</title>
+    </head>
+    
+    <body>
+        
+        <header>
+
+            <h1>Mis tarjetas </h1>
+            <table>
+
+                <tr>
+                    <th>Nro de tarjeta</th>
+                    <th>Fecha de vencimiento</th>
+                    <th>Código de seguridad</th>
+                </tr>
+
+                @if (listatarjeta == null)
+                {
+                    <p>Buscando...</p>
+                }
+                else
+                {
+                    @foreach (var item in listatarjeta)
+                    {
+                        <tr>
+                            <td>@item.NroTarjeta</td>
+                            <td>@item.FechaVencimiento</td>
+                            <td>@item.CodigoSeguridad</td>
+                        </tr>
+                    }
+                }
+
+
+            </table>
+
+        </header>
+        
+        <main>
+
+        </main>
+        
+        <footer>
+
+        </footer>
+    
+    </body>
+
+</html>
+
+@code {
+    List<Tarjeta> listatarjeta;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        await Leer();
+    }
+
+    private async Task Leer()
+    {
+        var respuesta = await http.Get<List<Tarjeta>>("api/Tarjeta");
+
+        listatarjeta = respuesta.Respuesta;
+    }
+}
