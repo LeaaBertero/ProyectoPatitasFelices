@@ -1,0 +1,77 @@
+﻿@page "/Api/ListaUsuarios"
+@inject IHTTPServicio http;
+@inject NavigationManager navigationManager;
+
+<!DOCTYPE html>
+<html>
+    
+    <head>
+        <title>Lista de usuarios</title>
+    </head>
+    
+    <body>
+
+        <header>
+            <h1>Lista de usuarios</h1>
+            <table>
+
+                <tr>
+                    <th>Nombre</th>
+                    <th>Correo electrónico</th>
+                    <th>Contraseña</th>
+                    <th>Foto de perfil</th>
+                    <th>Fecha de registro</th>
+                    <th>Rol</th>
+                </tr>
+
+                @if (listausuario == null)
+                {
+                    <p>Buscando...</p>
+                }
+                else
+                {
+                    @foreach (var item in listausuario)
+                    {
+                        <tr>
+                            <td>@item.Nombre</td>
+                            <td>@item.CorreoElectronico_Usuario</td>
+                            <td>@item.Contrasenia</td>
+                            <td>@item.FotoPerfil</td>
+                            <td>@item.FechaRegistro</td>
+                            <td>@item.Rol</td>
+                        </tr>
+                    }
+                }
+
+            </table>
+            <p>® Todos los derechos reservados ®</p>
+        </header>
+        <main>
+
+        </main>
+        
+        <footer>
+
+        </footer>
+    
+    </body>
+
+</html>
+
+@code {
+    List<Usuario> listausuario;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        await Leer();
+    }
+
+    private async Task Leer()
+    {
+        var respuesta = await http.Get<List<Usuario>>("api/Usuario");
+
+        listausuario = respuesta.Respuesta;
+    }
+}

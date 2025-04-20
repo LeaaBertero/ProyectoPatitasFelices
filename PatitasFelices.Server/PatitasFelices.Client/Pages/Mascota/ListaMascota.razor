@@ -1,0 +1,77 @@
+﻿@page "/Api/ListaMascotas"
+@inject IHTTPServicio http;
+@inject NavigationManager navigationManager;
+
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Lista de mascotas</title>
+    </head>
+
+    <body>
+       
+        <header>
+
+            <h1>Lista de mascotas</h1>
+            <table>
+
+                <tr>
+                    <th>Fecha inicio</th>
+                    <th>Fecha fin</th>
+                    <th>Estado de la reserva</th>
+                </tr>
+
+                @if (listamascotas == null)
+                {
+                    <p>Buscando...</p>
+                }
+                else
+                {
+                    @foreach (var item in listamascotas)
+                    {
+                        <tr>
+                            <td>@item.Nombre</td>
+                            <td>@item.Raza</td>
+                            <td>@item.Edad</td>
+                            <td>@item.Tamaño</td>
+                            <td>@item.Foto</td>
+                            <td>@item.NecesidadesEspeciales</td>
+                        </tr>
+                    }
+                }
+
+            </table>
+            <p>® Todos los derechos reservados ®</p>
+
+        </header>
+        
+        <main>
+
+        </main>
+        
+        <footer>
+
+        </footer>
+    
+    </body>
+
+</html>
+
+@code {
+    List<Mascota> listamascotas;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        await Leer();
+    }
+
+    private async Task Leer()
+    {
+        var respuesta = await http.Get<List<Mascota>>("api/Mascota");
+
+        listamascotas = respuesta.Respuesta;
+    }
+}

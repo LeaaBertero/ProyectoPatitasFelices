@@ -1,0 +1,69 @@
+﻿@page "/Api/ListaReservas"
+@inject IHTTPServicio http;
+@inject NavigationManager navigationManager;
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Lista de reservas</title>
+    </head>
+    <body>
+
+        <header>
+
+            <table>
+
+                <tr>
+                    <th>Fecha inicio</th>
+                    <th>Fecha fin</th>
+                    <th>Estado de la reserva</th>
+                </tr>
+
+                @if (listareservas == null)
+                {
+                    <p>Buscando...</p>
+                }
+                else
+                {
+                    @foreach (var item in listareservas)
+                    {
+                        <tr>
+                            <td>@item.FechaHoraInicio</td>
+                            <td>@item.FechaHoraFin</td>
+                            <td>@item.EstadoReserva</td>
+                        </tr>
+                    }
+                }
+
+            </table>
+
+        </header>
+        
+        <main>
+
+        </main>
+        
+        <footer>
+
+        </footer>
+    
+    </body>
+</html>
+
+@code {
+    List<Reserva> listareservas;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        await Leer();
+    }
+
+    private async Task Leer()
+    {
+        var respuesta = await http.Get<List<Reserva>>("api/Reserva");
+
+        listareservas = respuesta.Respuesta;
+    }
+}
