@@ -2,7 +2,7 @@
 
 namespace PatitasFelices.Client.Servicios
 {
-    public class HTTPServicio
+    public class HTTPServicio : IHTTPServicio
     {
         private readonly HttpClient http;
 
@@ -15,7 +15,7 @@ namespace PatitasFelices.Client.Servicios
         {
             var response = await http.GetAsync(url);
 
-            if (response.IsSuccessStatusCode) 
+            if (response.IsSuccessStatusCode)
             {
                 var respuesta = await DesSerializar<T>(response);
                 return new HTTPRespuesta<T>(respuesta, false, response);
@@ -28,9 +28,9 @@ namespace PatitasFelices.Client.Servicios
 
         private async Task<T?> DesSerializar<T>(HttpResponseMessage response)
         {
-           var respuestaStr = await response.Content.ReadAsStringAsync();
+            var respuestaStr = await response.Content.ReadAsStringAsync();
 
-            return JsonSerializer.Deserialize<T>(respuestaStr, 
+            return JsonSerializer.Deserialize<T>(respuestaStr,
                 new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         }
     }

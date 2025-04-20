@@ -1,0 +1,72 @@
+﻿@page "/Api/ListaTransaccion"
+@inject IHTTPServicio http;
+@inject NavigationManager navigationManager;
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Lista de transacciones</title>
+
+</head>
+
+<body>
+
+    <header>
+        <h1>Lista de transacciones del usuario</h1>
+
+        <table>
+            <tr>
+                <th>Monto o cantidad</th>
+                <th>Método de pago</th>
+            </tr>
+
+            @if (listatransaccion == null)
+            {
+                <p>Buscando...</p>
+            }
+            else
+            {
+                @foreach (var item in listatransaccion)
+                {
+                    <tr>
+                        <td>@item.Monto</td>
+                        <td>@item.MetodoPago</td>
+                    </tr>
+                }
+            }
+
+        </table>
+
+    </header>
+
+    <main>
+
+    </main>
+
+    <footer>
+        <p>® Todos los derechos reservados ®</p>
+    </footer>
+
+</body>
+
+</html>
+
+@code {
+    List<Transaccion> listatransaccion;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        await Leer();
+    }
+
+    private async Task Leer()
+    {
+        var respuesta = await http.Get<List<Transaccion>>("api/Transaccion");
+
+        listatransaccion = respuesta.Respuesta;
+    }
+}

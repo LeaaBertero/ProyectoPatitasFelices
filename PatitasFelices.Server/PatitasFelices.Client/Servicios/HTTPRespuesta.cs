@@ -2,7 +2,7 @@
 {
     public class HTTPRespuesta<T>
     {
-        public T respuesta { get; }
+        public T Respuesta { get; }
 
         public bool Error { get; }
 
@@ -10,7 +10,7 @@
 
         public HTTPRespuesta(T respuesta, bool error, HttpResponseMessage httpResponseMessage)
         {
-            this.respuesta = respuesta;
+            this.Respuesta = respuesta;
             Error = error;
             this.httpResponseMessage = httpResponseMessage;
         }
