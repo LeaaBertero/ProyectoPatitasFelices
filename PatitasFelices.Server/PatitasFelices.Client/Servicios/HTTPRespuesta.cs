@@ -13,7 +13,14 @@
             this.Respuesta = respuesta;
             Error = error;
             this.httpResponseMessage = httpResponseMessage;
+        
+
         }
 
+
     }
+
+
+
+
 }
