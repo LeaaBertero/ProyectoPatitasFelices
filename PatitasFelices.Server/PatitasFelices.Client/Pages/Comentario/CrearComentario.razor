@@ -20,7 +20,7 @@
                 <div class="form-group">
                     <label for="TextoComentario">Comentario</label>
                     <div>
-                        <InputText class="form-control" @bind-Value="comentario.TextoComentario" />
+                        <InputTextArea class="form-control" @bind-Value="comentario.TextoComentario" />
                         <ValidationMessage For="@(() => comentario.TextoComentario)" />
                     </div>
                 </div> 

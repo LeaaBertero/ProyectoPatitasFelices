@@ -16,6 +16,39 @@
 
         <main>
 
+            <EditForm Model="tarjeta" OnInvalidSubmit="Grabar">
+                <DataAnnotationsValidator />
+
+                <div class="form-group">
+                    <label for="TextoComentario">Nro de tarjeta</label>
+                    <div>
+                        <InputText class="form-control" @bind-Value="tarjeta.NroTarjeta" />
+                        <ValidationMessage For="@(() => tarjeta.NroTarjeta)" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="TextoComentario">Fecha de vencimiento</label>
+                    <div>
+                        <InputDate class="form-control" @bind-Value="tarjeta.FechaVencimiento" />
+                        <ValidationMessage For="@(() => tarjeta.FechaVencimiento)" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="TextoComentario">Contraseña</label>
+                    <div>
+                        <InputText class="form-control" @bind-Value="tarjeta. CodigoSeguridad" />
+                        <ValidationMessage For="@(() => tarjeta.CodigoSeguridad)" />
+                    </div>
+                </div>
+
+
+                <button class="btn btn-primary" type="submit">Crear usuario</button>
+                <button class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
+
+            </EditForm>
+
         </main>
 
         <footer>
@@ -27,5 +60,22 @@
 </html>
 
 @code {
+    private Tarjeta tarjeta = new Tarjeta();
 
+    private async Task Grabar()
+    {
+        var httpRespuesta = await http.Post<Tarjeta>("api/Tarjeta", tarjeta);
+
+        if (httpRespuesta.Error)
+        {
+            var body = httpRespuesta.httpResponseMessage;
+
+            navigationManager.NavigateTo("/Api/ListaTarjeta");
+        }
+    }
+
+    private void Cancelar()
+    {
+        navigationManager.NavigateTo("/Api/ListaTarjeta");
+    }
 }
