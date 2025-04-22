@@ -36,7 +36,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="TextoComentario">Contraseña</label>
+                    <label for="TextoComentario">Código de seguridad</label>
                     <div>
                         <InputText class="form-control" @bind-Value="tarjeta. CodigoSeguridad" />
                         <ValidationMessage For="@(() => tarjeta.CodigoSeguridad)" />
@@ -44,7 +44,7 @@
                 </div>
 
 
-                <button class="btn btn-primary" type="submit">Crear usuario</button>
+                <button class="btn btn-primary" type="submit">Nueva tarjeta</button>
                 <button class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
 
             </EditForm>
