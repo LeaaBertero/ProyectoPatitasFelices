@@ -20,7 +20,7 @@
             <div class="form-group">
                 <label for="TextoComentario">Comentario</label>
                 <div>
-                    <InputText class="form-control" id="TextoComentario" @bind-Value="comentario.TextoComentario" />
+                    <InputText class="form-control" @bind-Value="comentario.TextoComentario" />
                     <ValidationMessage For="@(() => comentario.TextoComentario)" />
                 </div>
             </div> 
@@ -28,7 +28,7 @@
             <div class="form-group">
                 <label for="TextoComentario">Fecha de publicación</label>
                 <div>
-                    <InputDate class="form-control" id="TextoComentario" @bind-Value="comentario.FechaPublicacion" />
+                    <InputDate class="form-control" @bind-Value="comentario.FechaPublicacion" />
                     <ValidationMessage For="@(() => comentario.FechaPublicacion)" />
                 </div>
             </div> 
