@@ -4,15 +4,17 @@
 
 <!DOCTYPE html>
 <html>
-    
+
     <head>
         <title>Lista de usuarios</title>
     </head>
-    
+
     <body>
 
         <header>
+
             <h1>Lista de usuarios</h1>
+
             <table>
 
                 <tr>
@@ -44,22 +46,31 @@
                 }
 
             </table>
-            <p>® Todos los derechos reservados ®</p>
+
+          
+
         </header>
+
         <main>
 
         </main>
-        
+
         <footer>
 
         </footer>
-    
+
+        <p>® Todos los derechos reservados ®</p>
+
     </body>
 
 </html>
 
 @code {
+   
+
     List<Usuario> listausuario;
+
+    string Mensaje;
 
     protected override async Task OnInitializedAsync()
     {
@@ -71,7 +82,15 @@
     private async Task Leer()
     {
         var respuesta = await http.Get<List<Usuario>>("api/Usuario");
-
-        listausuario = respuesta.Respuesta;
+        if (!respuesta.Error)
+        {
+            listausuario = respuesta.Respuesta;
+        }
+        else
+        {
+            Mensaje = await respuesta.ObtenerError();
+        }
+            
     }
+    
 }

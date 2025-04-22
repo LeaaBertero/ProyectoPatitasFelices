@@ -18,6 +18,31 @@
         }
 
 
+        public async Task<string> ObtenerError()
+        {
+            if (!Error)
+            {
+                return "";
+            }
+
+            var statuscode = httpResponseMessage.StatusCode;
+
+            switch (statuscode)
+            {
+                case System.Net.HttpStatusCode.BadRequest:
+                    return httpResponseMessage.Content.ReadAsStringAsync().ToString()!;
+                //                    return "Error, no se puede procesar la información";
+                case System.Net.HttpStatusCode.Unauthorized:
+                    return "Error, no está logueado";
+                case System.Net.HttpStatusCode.Forbidden:
+                    return "Error, no tiene autorización a ejecutar este proceso";
+                case System.Net.HttpStatusCode.NotFound:
+                    return "Error, dirección no encontrado";
+                default:
+                    return httpResponseMessage.Content.ReadAsStringAsync().Result;
+            }
+        }
+
     }
 
 
