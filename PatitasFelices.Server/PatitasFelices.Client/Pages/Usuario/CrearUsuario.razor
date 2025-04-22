@@ -2,7 +2,6 @@
 @inject IHTTPServicio http;
 @inject NavigationManager navigationManager;
 
-
 <!DOCTYPE html>
 <html>
         
@@ -18,6 +17,64 @@
 
         <main>
 
+            <EditForm Model="usuario" OnInvalidSubmit="Grabar">
+                <DataAnnotationsValidator />
+
+                <div class="form-group">
+                    <label for="TextoComentario">Nombre</label>
+                    <div>
+                        <InputText class="form-control" @bind-Value="usuario.Nombre" />
+                        <ValidationMessage For="@(() => usuario.Nombre)" />
+                    </div>
+                </div> 
+                
+                <div class="form-group">
+                    <label for="TextoComentario">E-mail</label>
+                    <div>
+                        <InputText class="form-control" @bind-Value="usuario.CorreoElectronico_Usuario" />
+                        <ValidationMessage For="@(() => usuario.CorreoElectronico_Usuario)" />
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="TextoComentario">Contraseña</label>
+                    <div>
+                        <InputText class="form-control" @bind-Value="usuario.Contrasenia" />
+                        <ValidationMessage For="@(() => usuario.Contrasenia)" />
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="TextoComentario">Foto de perfil</label>
+                    <div>
+                        <InputText class="form-control" @bind-Value="usuario.FotoPerfil" />
+                        <ValidationMessage For="@(() => usuario.FotoPerfil)" />
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="TextoComentario">Fecha de registro</label>
+                    <div>
+                        <InputDate class="form-control" @bind-Value="usuario.FechaRegistro" />
+                        <ValidationMessage For="@(() => usuario.FechaRegistro)" />
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="TextoComentario">Rol</label>
+                    <div>
+                        <InputText class="form-control" @bind-Value="usuario.Rol" />
+                        <ValidationMessage For="@(() => usuario.Rol)" />
+                    </div>
+                </div>
+
+                
+
+                <button class="btn btn-primary" type="submit">Crear usuario</button>
+                <button class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
+
+            </EditForm>
+
         </main>
             
         <footer>
@@ -29,5 +86,22 @@
 </html>
 
 @code {
+    private Usuario usuario = new Usuario();
 
+    private async Task Grabar()
+    {
+        var httpRespuesta = await http.Post<Usuario>("api/Usuario", usuario);
+
+        if (httpRespuesta.Error)
+        {
+            var body = httpRespuesta.httpResponseMessage;
+
+            navigationManager.NavigateTo("/Api/ListaUsuarios");
+        }
+    }
+
+    private void Cancelar()
+    {
+        navigationManager.NavigateTo("/Api/ListaUsuarios");
+    }
 }
