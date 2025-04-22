@@ -10,35 +10,41 @@
     </head>
 
     <body>
+
         <h1>Lista de nombre de los servicios</h1>
 
+        <a class="btn btn-primary" href="/Api/NombreServicio/Crear">Crear nombre del servicio</a>
+        <a class="btn btn-secondary" href="#">Cancelar</a>
+
         <header>
-        <table>
 
-            <tr>
-                <th>Nombre del servicio</th>
-                <th>Precio</th>
+            <table>
 
-            </tr>
+                <tr>
+                    <th>Nombre del servicio</th>
+                    <th>Precio</th>
 
-            @if (listanombreservicio == null)
-            {
-                <p>Buscando...</p>
-            }
-            else
-            {
-                @foreach (var item in listanombreservicio)
+                </tr>
+
+                @if (listanombreservicio == null)
                 {
-                    <tr>
-                        <td>@item.NombreDeServicio</td>
-                        <td>@item.Precio</td>
-
-                    </tr>
+                    <p>Buscando...</p>
                 }
-            }
+                else
+                {
+                    @foreach (var item in listanombreservicio)
+                    {
+                        <tr>
+                            <td>@item.NombreDeServicio</td>
+                            <td>@item.Precio</td>
+
+                        </tr>
+                    }
+                }
 
 
-        </table>
+            </table>
+
         </header>
         
         <main>

@@ -4,28 +4,71 @@
 
 <html>
 
-    <head>
-        <title>Comentarios</title>
-    </head>
+<head>
+    <title>Comentarios</title>
+</head>
 
-    <body>
+<body>
 
-        <header>
-            <h1>Nuevo comentario</h1>
-        </header>
+    <header>
 
-        <main>
+        <h1>Nuevo comentario</h1>
 
-        </main>
+        <EditForm Model="comentario" OnInvalidSubmit="Grabar">
+            <DataAnnotationsValidator/>
 
-        <footer>
-            <p>® Todos los derechos reservados ®</p>
-        </footer>
+            <div class="form-group">
+                <label for="TextoComentario">Comentario</label>
+                <div>
+                    <InputText class="form-control" id="TextoComentario" @bind-Value="comentario.TextoComentario" />
+                    <ValidationMessage For="@(() => comentario.TextoComentario)" />
+                </div>
+            </div> 
 
-    </body>
+            <div class="form-group">
+                <label for="TextoComentario">Fecha de publicación</label>
+                <div>
+                    <InputDate class="form-control" id="TextoComentario" @bind-Value="comentario.FechaPublicacion" />
+                    <ValidationMessage For="@(() => comentario.FechaPublicacion)" />
+                </div>
+            </div> 
+
+            <button class="btn btn-primary" type="submit">Publicar comentario</button>
+            <button class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
+
+        </EditForm>
+
+    </header>
+
+    <main>
+
+    </main>
+
+    <footer>
+        <p>® Todos los derechos reservados ®</p>
+    </footer>
+
+</body>
 
 </html>
 
 @code {
+    private Comentario comentario = new Comentario();
 
+    private async Task Grabar()
+    {
+        var httpRespuesta = await http.Post<Comentario>("api/Comentario", comentario);
+
+        if (httpRespuesta.Error)
+        {
+            var body = httpRespuesta.httpResponseMessage;
+
+            navigationManager.NavigateTo("/Api/ListaComentario");
+        }
+    }
+    
+    private void Cancelar()
+    {
+        navigationManager.NavigateTo("/Api/ListaComentario");
+    }
 }

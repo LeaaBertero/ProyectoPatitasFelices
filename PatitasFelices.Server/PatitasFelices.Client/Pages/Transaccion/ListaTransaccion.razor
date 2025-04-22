@@ -10,47 +10,50 @@
 
     </head>
 
-<body>
+    <body>
 
-    <header>
+        <header>
         
-        <h1>Lista de transacciones del usuario</h1>
+            <h1>Mi lista de transacciones</h1>
 
-        <table>
+            <a class="btn btn-primary" href="/Api/Transaccion/Crear">Nueva operación</a>
+            <a class="btn btn-secondary" href="#">Cancelar</a>
+
+            <table>
             
-            <tr>
-                <th>Monto o cantidad</th>
-                <th>Método de pago</th>
-            </tr>
+                <tr>
+                    <th>Monto o cantidad</th>
+                    <th>Método de pago</th>
+                </tr>
 
-            @if (listatransaccion == null)
-            {
-                <p>Buscando...</p>
-            }
-            else
-            {
-                @foreach (var item in listatransaccion)
+                @if (listatransaccion == null)
                 {
-                    <tr>
-                        <td>@item.Monto</td>
-                        <td>@item.MetodoPago</td>
-                    </tr>
+                    <p>Buscando...</p>
                 }
-            }
+                else
+                {
+                    @foreach (var item in listatransaccion)
+                    {
+                        <tr>
+                            <td>@item.Monto</td>
+                            <td>@item.MetodoPago</td>
+                        </tr>
+                    }
+                }
 
-        </table>
+            </table>
 
-    </header>
+        </header>
 
-    <main>
+        <main>
 
-    </main>
+        </main>
 
-    <footer>
-        <p>® Todos los derechos reservados ®</p>
-    </footer>
+        <footer>
+            <p>® Todos los derechos reservados ®</p>
+        </footer>
 
-</body>
+    </body>
 
 </html>
 
