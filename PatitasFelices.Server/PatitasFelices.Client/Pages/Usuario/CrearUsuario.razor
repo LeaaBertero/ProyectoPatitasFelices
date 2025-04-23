@@ -47,7 +47,7 @@
                 <div class="form-group">
                     <label for="TextoComentario">Foto de perfil</label>
                     <div>
-                        <InputText class="form-control" @bind-Value="usuario.FotoPerfil" />
+                        <InputFile class="form-control" @bind-Value="usuario.FotoPerfil" />
                         <ValidationMessage For="@(() => usuario.FotoPerfil)" />
                     </div>
                 </div>
