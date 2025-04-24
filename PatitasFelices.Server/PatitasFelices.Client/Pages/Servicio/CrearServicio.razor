@@ -16,6 +16,26 @@
 
         <main>
 
+            <EditForm Model="servicio" OnInvalidSubmit="Grabar">
+                <DataAnnotationsValidator />
+
+                <div class="form-group">
+                    <label for="TextoComentario">Nombre del servicio</label>
+                    <div>
+                        <InputText class="form-control" @bind-Value="servicio.NombreServicio" />
+                        <ValidationMessage For="@(() => servicio.NombreServicio)" />
+                    </div>
+                </div>
+
+               
+
+
+
+                <button class="btn btn-primary" type="submit">Nuevo nombre / Servicio</button>
+                <button class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
+
+            </EditForm>
+
         </main>
 
         <footer>
@@ -27,5 +47,22 @@
 </html>
 
 @code {
+    private Servicio servicio = new Servicio();
 
+    private async Task Grabar()
+    {
+        var httpRespuesta = await http.Post<Servicio>("api/Servicio", servicio);
+
+        if (httpRespuesta.Error)
+        {
+            var body = httpRespuesta.httpResponseMessage;
+
+            navigationManager.NavigateTo("/Api/ListaServicio");
+        }
+    }
+
+    private void Cancelar()
+    {
+        navigationManager.NavigateTo("/Api/ListaServicio");
+    }
 }
