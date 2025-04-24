@@ -16,15 +16,21 @@
             <h1>Lista de mascotas</h1>
             <table>
 
+                <a class="btn btn-primary" href="/Api/Comentario/Crear">Añadir nueva mascota</a>
+                <a class="btn btn-secondary" href="#">Cancelar</a>
+
                 <tr>
-                    <th>Fecha inicio</th>
-                    <th>Fecha fin</th>
-                    <th>Estado de la reserva</th>
+                    <th>Nombre</th>
+                    <th>Raza</th>
+                    <th>Edad</th>
+                    <th>Tamaño</th>
+                    <th>Foto</th>
+                    <th>Necesidades especiales</th>
                 </tr>
 
                 @if (listamascotas == null)
                 {
-                    <p>Buscando...</p>
+                    <p>Buscando mascotas</p>
                 }
                 else
                 {
