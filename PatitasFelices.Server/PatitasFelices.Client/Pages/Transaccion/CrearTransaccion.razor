@@ -16,6 +16,34 @@
 
         <main>
 
+            <EditForm Model="transaccion" OnInvalidSubmit="Grabar">
+                <DataAnnotationsValidator />
+
+                <div class="form-group">
+                    <label for="TextoComentario">Monto</label>
+                    <div>
+                        <InputNumber class="form-control" @bind-Value="transaccion.Monto" />
+                        <ValidationMessage For="@(() => transaccion.Monto)" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="TextoComentario">Método de pago</label>
+                    <div>
+                        <InputText class="form-control" @bind-Value="transaccion.MetodoPago" />
+                        <ValidationMessage For="@(() => transaccion.MetodoPago)" />
+                    </div>
+                </div>
+
+           
+
+
+
+                <button class="btn btn-primary" type="submit">Nuevo método de pago</button>
+                <button class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
+
+            </EditForm>
+
         </main>
 
         <footer>
@@ -27,5 +55,22 @@
 </html>
 
 @code {
+    private Transaccion transaccion = new Transaccion();
 
+    private async Task Grabar()
+    {
+        var httpRespuesta = await http.Post<Transaccion>("api/Transaccion", transaccion);
+
+        if (httpRespuesta.Error)
+        {
+            var body = httpRespuesta.httpResponseMessage;
+
+            navigationManager.NavigateTo("/Api/ListaTransaccion");
+        }
+    }
+
+    private void Cancelar()
+    {
+        navigationManager.NavigateTo("/Api/ListaTransaccion");
+    }
 }
