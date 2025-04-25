@@ -16,41 +16,41 @@
 
         <main>
 
-        <EditForm Model="reserva" OnInvalidSubmit="Grabar">
-            <DataAnnotationsValidator />
+            <EditForm Model="reserva" OnInvalidSubmit="Grabar">
+                <DataAnnotationsValidator />
 
-            <div class="form-group">
-                <label for="TextoComentario">Fecha inicio</label>
-                <div>
-                    <InputDate class="form-control" @bind-Value="reserva.FechaHoraInicio" />
-                    <ValidationMessage For="@(() => reserva.FechaHoraInicio)" />
+                <div class="form-group">
+                    <label for="TextoComentario">Fecha inicio</label>
+                    <div>
+                        <InputDate class="form-control" @bind-Value="reserva.FechaHoraInicio" />
+                        <ValidationMessage For="@(() => reserva.FechaHoraInicio)" />
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group">
-                <label for="TextoComentario">Fecha de fin</label>
-                <div>
-                    <InputDate class="form-control" @bind-Value="reserva.FechaHoraFin" />
-                    <ValidationMessage For="@(() => reserva.FechaHoraFin)" />
+                <div class="form-group">
+                    <label for="TextoComentario">Fecha de fin</label>
+                    <div>
+                        <InputDate class="form-control" @bind-Value="reserva.FechaHoraFin" />
+                        <ValidationMessage For="@(() => reserva.FechaHoraFin)" />
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group">
-                <label for="TextoComentario">Estado de la reserva</label>
-                <div>
-                    <InputText class="form-control" @bind-Value="reserva.EstadoReserva" />
-                    <ValidationMessage For="@(() => reserva.EstadoReserva)" />
+                <div class="form-group">
+                    <label for="TextoComentario">Estado de la reserva</label>
+                    <div>
+                        <InputText class="form-control" @bind-Value="reserva.EstadoReserva" />
+                        <ValidationMessage For="@(() => reserva.EstadoReserva)" />
+                    </div>
                 </div>
-            </div>
 
            
 
 
 
-            <button class="btn btn-primary" type="submit">Nueva reserva</button>
-            <button class="btn btn-secondary" @onclick="Cancelar">Ver lista</button>
+                <button class="btn btn-primary" type="submit">Nueva reserva</button>
+                <button class="btn btn-secondary" @onclick="Cancelar">Ver lista</button>
 
-        </EditForm>
+            </EditForm>
 
         </main>
 
