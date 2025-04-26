@@ -16,6 +16,31 @@
 
         <main>
 
+            <EditForm Model="precio" OnInvalidSubmit="Grabar">
+                <DataAnnotationsValidator />
+
+                <div class="form-group">
+                    <label for="TextoComentario">Precio por hora</label>
+                    <div>
+                        <InputNumber class="form-control" @bind-Value="precio.PrecioHora" />
+                        <ValidationMessage For="@(() => precio.PrecioHora)" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="TextoComentario">Precio por día</label>
+                    <div>
+                        <InputNumber class="form-control" @bind-Value="precio.PrecioDia" />
+                        <ValidationMessage For="@(() => precio.PrecioDia)" />
+                    </div>
+                </div>
+
+            
+                <button class="btn btn-primary" type="submit">Cargar precio</button>
+                <button class="btn btn-secondary" @onclick="Cancelar">Ver lista</button>
+
+            </EditForm>
+
         </main>
 
         <footer>
@@ -27,5 +52,22 @@
 </html>
 
 @code {
+    private Precio precio = new Precio();
 
+    private async Task Grabar()
+    {
+        var httpRespuesta = await http.Post<Precio>("api/Precio", precio);
+
+        if (httpRespuesta.Error)
+        {
+            var body = httpRespuesta.httpResponseMessage;
+
+            navigationManager.NavigateTo("/Api/ListaPrecio");
+        }
+    }
+
+    private void Cancelar()
+    {
+        navigationManager.NavigateTo("/Api/ListaPrecio");
+    }
 }
