@@ -17,6 +17,7 @@
 
             <a class="btn btn-primary" href="/Api/Tarjeta/Crear">Agregar nueva tarjeta</a>
             <a class="btn btn-secondary" href="#">Cancelar</a>
+            @* <a class="btn btn-success" href="#">Editar</a> *@
 
             <table>
 
@@ -38,6 +39,10 @@
                             <td>@item.NroTarjeta</td>
                             <td>@item.FechaVencimiento</td>
                             <td>@item.CodigoSeguridad</td>
+
+                            <td>
+                                <a class="btn btn-warning" href="Api/Tarjeta/Editar/@item.Id">Modificar / Cambiar</a>
+                            </td>
                         </tr>
                     }
                 }

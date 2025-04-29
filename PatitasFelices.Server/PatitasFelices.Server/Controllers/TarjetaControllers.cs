@@ -52,7 +52,7 @@ namespace PatitasFelices.Server.Controllers
         }
         #endregion
 
-        #region Método update
+        #region Método Put
         [HttpPut("{id:int}")]
         public async Task<ActionResult> Put(int id, [FromBody] Tarjeta entidad)
         {
