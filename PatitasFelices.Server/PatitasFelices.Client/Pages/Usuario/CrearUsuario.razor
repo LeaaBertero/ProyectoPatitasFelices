@@ -18,11 +18,11 @@
 
         <main>
 
-            <EditForm Model="usuario" OnInvalidSubmit="Grabar">
+            <EditForm Model="usuario" OnValidSubmit="Grabar">
                 <DataAnnotationsValidator />
 
                 <div class="form-group">
-                    <label for="TextoComentario">Nombre</label>
+                <label for="TextoComentario">Nombre</label>
                     <div>
                         <InputText class="form-control" @bind-Value="usuario.Nombre" />
                         <ValidationMessage For="@(() => usuario.Nombre)" />
@@ -30,7 +30,7 @@
                 </div> 
                 
                 <div class="form-group">
-                    <label for="TextoComentario">E-mail</label>
+                <label for="TextoComentario">CorreoElectronico_Usuario</label>
                     <div>
                         <InputText class="form-control" @bind-Value="usuario.CorreoElectronico_Usuario" />
                         <ValidationMessage For="@(() => usuario.CorreoElectronico_Usuario)" />
@@ -38,7 +38,7 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="TextoComentario">Contraseña</label>
+                <label for="TextoComentario">Contrasenia</label>
                     <div>
                         <InputText class="form-control" @bind-Value="usuario.Contrasenia" />
                         <ValidationMessage For="@(() => usuario.Contrasenia)" />
@@ -46,7 +46,7 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="TextoComentario">Foto de perfil</label>
+                <label for="TextoComentario">FotoPerfil</label>
                     <div>
                         <InputFile class="form-control" @bind-Value="usuario.FotoPerfil" />
                         <ValidationMessage For="@(() => usuario.FotoPerfil)" />
@@ -54,7 +54,7 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="TextoComentario">Fecha de registro</label>
+                <label for="TextoComentario">FechaRegistro</label>
                     <div>
                         <InputDate class="form-control" @bind-Value="usuario.FechaRegistro" />
                         <ValidationMessage For="@(() => usuario.FechaRegistro)" />
@@ -62,7 +62,7 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="TextoComentario">Rol</label>
+                <label for="TextoComentario">Rol</label>
                     <div>
                         <InputText class="form-control" @bind-Value="usuario.Rol" />
                         <ValidationMessage For="@(() => usuario.Rol)" />

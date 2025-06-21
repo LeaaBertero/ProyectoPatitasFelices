@@ -16,7 +16,7 @@
 
         <main>
 
-            <EditForm Model="tarjeta" OnInvalidSubmit="Grabar">
+            <EditForm Model="tarjeta" OnValidSubmit="Grabar">
                 <DataAnnotationsValidator />
 
                 <div class="form-group">
@@ -64,7 +64,7 @@
 
     private async Task Grabar()
     {
-        var httpRespuesta = await http.Post<Tarjeta>("api/Tarjeta", tarjeta);
+        var httpRespuesta = await http.Post<Tarjeta>("/Api/Tarjeta/Crear", tarjeta);
 
         if (httpRespuesta.Error)
         {
